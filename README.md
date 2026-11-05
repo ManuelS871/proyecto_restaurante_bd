@@ -42,8 +42,6 @@ Sistema para gestionar **mesas, reservaciones, menú, pedidos, preparación y en
 │   ├── consultas_reportes.sql    # 11 consultas numeradas (casos de uso + reportes)
 │   ├── pruebas_triggers.sql      # Casos positivos/negativos por trigger
 │   └── pruebas_particiones.sql   # Routing, tableoid y EXPLAIN Partition Pruning
-├── backup.sql                    # Dump de referencia (pg_dump, opcional)
-├── 2026.3-ProyectoRestaurante.pdf # Enunciado oficial
 └── README.md                     # Este archivo
 ```
 
@@ -127,7 +125,7 @@ Validación: `sql/pruebas_particiones.sql` (insert por rango, `tableoid::regclas
 
 - PostgreSQL 14+, PHP 7.4+ con `php-pgsql`, Apache (o PHP built-in).
 - Extensión: `CREATE EXTENSION IF NOT EXISTS pgcrypto;`
-- Usuario/BD: ver `public_html/etc/parametros.php` (por defecto `manuel` / `restaurante`, ajuste con `export PGPASSWORD` y `\c`).
+- Usuario/BD: ver `public_html/etc/parametros.php` (por defecto `usuario` / `restaurante`, ajuste con `export PGPASSWORD` y `\c`).
 
 ### 6.2 Crear BD e inicializar esquema (orden obligatorio)
 
@@ -149,19 +147,11 @@ psql -U manuel -d restaurante -f sql/cargar_datos_reportes.sql
 
 ### 6.3 Servidor web
 
-**Opción A — Apache (recomendado para sustentación)**
+**Opción A — Apache**
 
 ```bash
 sudo a2enmod php8.2  # o tu versión
 sudo systemctl restart apache2
-# Apunta DocumentRoot a /home/estudiante/public_html y abre http://localhost/
-```
-
-**Opción B — PHP built-in (solo dev, no recomendado)**
-
-```bash
-php -S localhost:8000 -t public_html
-# http://localhost:8000/
 ```
 
 ### Credenciales de prueba (seed)
@@ -220,10 +210,4 @@ psql -U manuel -d restaurante -f sql/pruebas_particiones.sql
 # Conexión PHP/PostgreSQL
 php public_html/postgres.php
 ```
-
-## 10. Notas de seguridad / Git
-
-- **No subas credenciales reales**: `public_html/etc/parametros.php` y `postgres.php` contienen host/user/pass. Usa variables de entorno o un `parametros.local.php` ignorado. Si ya lo hiciste, **rota la clave en PostgreSQL**.
-- `public_html/.gitignore` debe excluir `parametros.php` (conserva solo el ejemplo) o los respaldos `*.bak`.
-- `backup.sql` es un volcado local de referencia; puede excluirse de GitHub si es muy grande.
 
