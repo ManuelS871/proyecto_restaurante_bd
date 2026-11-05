@@ -1,0 +1,339 @@
+@font-face {
+    font-family:        fuente_delgada;
+    font-style:         normal;
+    font-weight:        normal;
+    src:                url('../ttf/Antonio-Regular.ttf');
+}
+@font-face {
+    font-family:        fuente_regular;
+    font-style:         normal;
+    font-weight:        normal;
+    src:                local('Trebuchet MS');
+}
+@font-face {
+    font-family:        fuente_decorativa;
+    font-style:         normal;
+    font-weight:        normal;
+    src:                url('../ttf/dreamporp.ttf');
+}
+body {
+    background:         cyan;
+    padding:            15%;
+    padding-top:        10px;
+    text-align:         center;
+    background:         blue;
+    background:         linear-gradient( to top right
+                                       , navy
+                                       , blue
+                                       , cyan
+                                       ); /* https://css-tricks.com/css3-gradients/ */
+    font-family:        fuente_decorativa;
+}
+body * {
+    font-family:        fuente_regular;
+}
+a, input[type=submit] {
+    display:            inline-block;
+    background:         white;
+    color:              navy;
+    font-size:          1.5em;
+    margin:             15px;
+    border:             3px solid black;
+    padding:            15px;
+    border-radius:      5px;
+    text-decoration:    none;
+}
+a.PESTANHA {
+    background:         navy;
+    color:              cyan;
+    font-size:          1em;
+    border:             1px solid black;
+    border:             0px;
+    border-bottom:      1px solid navy;
+    border-radius:      15px 15px 0px 0px;
+    margin-bottom:      0px;
+}
+a.ACTIVA {
+    background:         white;
+    color:              navy;
+    border-bottom:      0px;
+    font-size:          1.3em;
+}
+nav {
+}
+header {
+    background:         cyan;
+    border-radius:      15px 15px 0px 0px;
+    padding:            15px;
+    font-size:          2em;
+}
+main {
+    background:         white;
+    border:             0px;
+    border-radius:      0px 0px 15px 15px;
+    padding:            25px;
+}
+footer * {
+    display:            inline-block;
+    background:         white;
+    margin:             5px;
+    margin-top:         0px;
+    border-radius:      0px 0px 5px 5px;
+    padding:            5px;
+}
+.MENU_OPCIONES button {
+	height:		100px;
+	width:		100px;
+	margin:		10px;
+	font-size:	large;
+}
+.SECCION {
+	display:	inline-block;
+	margin:		10px;
+	border:		3px solid grey;
+	border-radius:	10px;
+	padding:	5px;
+	vertical-align: top;
+}
+.PLATO {
+	text-align:	center;
+	border-bottom:	1px dotted black;
+}
+.PLATO .TIPO {
+	display: inline-block;
+	text-align:	left;
+	width:		145px;
+}
+.PLATO .NOMBRE {
+	display: inline-block;
+	text-align:	left;
+	width:		145px;
+    vertical-align: middle;
+}
+.PLATO .DESCRIPCION {
+	display: inline-block;
+	text-align:	left;
+	width:		145px;
+	font-size:	small;
+    vertical-align: middle;
+}
+.PLATO .PRECIO {
+	font-size:   	1.2em;
+    vertical-align: middle;
+    margin-left:    35px;
+}
+
+/* ============================================================
+   ESTILOS ADICIONALES PARA MÓDULOS DE ROLES Y REPORTES
+   ============================================================ */
+.MENU_PRINCIPAL_GRID {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+.MENU_PRINCIPAL_GRID button {
+    width: 140px;
+    height: 90px;
+    font-size: 1em;
+    font-weight: bold;
+    color: #0d2c6c;
+    background: #eef4fc;
+    border: 2px solid #0d2c6c;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.MENU_PRINCIPAL_GRID button:hover {
+    background: #0d2c6c;
+    color: white;
+}
+
+.TABLA_GESTION {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 0.95em;
+    background: white;
+}
+.TABLA_GESTION th {
+    background: #0d2c6c;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #c2d4ec;
+}
+.TABLA_GESTION td {
+    padding: 8px 10px;
+    border: 1px solid #dce6f2;
+    text-align: center;
+}
+.TABLA_GESTION tr:nth-child(even) {
+    background: #f8fafd;
+}
+.TABLA_GESTION tr:hover {
+    background: #eaf1fa;
+}
+
+.FORM_CARD {
+    background: #fdfefe;
+    border: 2px solid #0d2c6c;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 15px auto;
+    max-width: 650px;
+    text-align: left;
+}
+.FORM_CARD label {
+    display: block;
+    margin-top: 8px;
+    font-weight: bold;
+    color: #0d2c6c;
+}
+.FORM_CARD input, .FORM_CARD select, .FORM_CARD textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    border: 1px solid #9bb5d6;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.BTN_SM {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 0.85em;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    margin: 2px;
+}
+.BTN_PRIMARIO { background: #0d2c6c; color: white; }
+.BTN_EXITO { background: #1b8a36; color: white; }
+.BTN_ALERTA { background: #d97706; color: white; }
+.BTN_PELIGRO { background: #b91c1c; color: white; }
+
+.ALERTA_INFO {
+    background: #e0f2fe;
+    color: #0369a1;
+    border-left: 5px solid #0284c7;
+    padding: 10px 15px;
+    margin: 10px 0;
+    text-align: left;
+    border-radius: 4px;
+}
+.ALERTA_SUCCESS {
+    background: #dcfce7;
+    color: #15803d;
+    border-left: 5px solid #22c55e;
+    padding: 10px 15px;
+    margin: 10px 0;
+    text-align: left;
+    border-radius: 4px;
+}
+.ALERTA_DANGER {
+    background: #fee2e2;
+    color: #b91c1c;
+    border-left: 5px solid #ef4444;
+    padding: 10px 15px;
+    margin: 10px 0;
+    text-align: left;
+    border-radius: 4px;
+}
+
+.BADGE {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+    display: inline-block;
+}
+.BADGE_SOLICITADO { background: #fef3c7; color: #b45309; }
+.BADGE_LISTO { background: #dcfce7; color: #15803d; }
+.BADGE_ENTREGADO { background: #dbeafe; color: #1d4ed8; }
+.BADGE_CANCELADO { background: #fee2e2; color: #b91c1c; }
+
+.SUBNAV {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+.SUBNAV a {
+    padding: 8px 16px;
+    font-size: 0.95em;
+    background: #e2e8f0;
+    color: #334155;
+    border-radius: 6px;
+    border: none;
+    margin: 0;
+}
+.SUBNAV a.ACTIVO {
+    background: #0d2c6c;
+    color: white;
+}
+
+.KPI_GRID {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin: 15px auto 25px auto;
+    max-width: 900px;
+}
+.KPI_CARD {
+    flex: 1 1 180px;
+    background: #f8fafd;
+    border: 1px solid #c2d4ec;
+    border-top: 4px solid #0d2c6c;
+    border-radius: 8px;
+    padding: 12px 15px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.KPI_VALOR {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #0d2c6c;
+}
+.KPI_TITULO {
+    font-size: 0.8em;
+    color: #64748b;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 4px;
+}
+.SELECTOR_BAR {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin: 15px auto 20px auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    max-width: 800px;
+}
+.SELECTOR_ITEM {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.SELECTOR_ITEM label {
+    font-weight: bold;
+    font-size: 0.9em;
+    color: #0d2c6c;
+}
+.SELECTOR_ITEM select {
+    padding: 6px 12px;
+    border-radius: 5px;
+    border: 1px solid #94a3b8;
+    background: white;
+    font-size: 0.95em;
+    color: #1e293b;
+}

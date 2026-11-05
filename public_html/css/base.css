@@ -1,0 +1,222 @@
+/*@font-face {
+    font-family: externa;
+    font-style: normal;
+    font-weight: normal;
+    src: url('../img/MyriandwebPro-Condensed.ttf')
+}*/
+* {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'trebuchet MS', tahoma;
+}
+nav{
+    position:       absolute;
+    top:            0px;
+    left:           40px;
+    height:         150px;
+    width:          550px;
+    margin:         auto;
+    padding-left:   350px;
+    vertical-align: top;
+}
+
+nav div.bot_navegacion{
+    height:                 90px;
+    width:                  120px;
+    margin-right:           10px;
+    float:                  left;
+    vertical-align:         top;
+    border-radius:          0px 0px 10px 10px;
+    -moz-border-radius:     0px 0px 10px 10px;
+    -webkit-border-radius:  0px 0px 10px 10px;
+    cursor:                 pointer;
+    transition:             height .4s;
+    transform:              rotate(-15deg);
+}
+#boton1 { background: rgba(0,200,0,.5); }
+#boton2 { background: rgba(0,100,155,.5); }
+#boton3 { background: rgba(0,200,0,.5); }
+#boton4 { background: rgba(0,100,155,.5); }
+
+nav img.icon {
+    display:        block;
+    background: rgba(255,255,255,.3);
+    margin:         auto;
+    margin-top:     10px;
+    padding:        5px;
+    border:         1px solid rgba(0,0,0,.3);
+    border-radius:  50%;
+    box-shadow:     0px 0px 0px 20px rgba(0,0,0,.3);
+    transition:      box-shadow .2s;
+}
+
+nav p.menutxt {
+    color:      black;
+    opacity:    .7;
+    margin:     auto;
+    display:    block;
+    text-align: center;
+    font-weight: bold;
+    transition:  padding .4s;
+    font-family: externa, 'trebuchet MS', tahoma;
+}
+
+nav div.bot_navegacion:hover { height: 100px; }
+nav div.bot_navegacion:hover p { padding-top: 10px; }
+nav div.bot_navegacion:hover img { box-shadow: 0px 0px 0px 0px rgba(0,0,0,.3); }
+
+#logo-ppal{
+    display:        none;
+}
+body{
+    background:     url('../img/fondo-izq.png') repeat-y,
+                    url('../img/fondo-der.png') right repeat-y;
+    margin:         auto 60px auto 60px;
+}
+
+h1, h2, h3 { font-family: externa, 'trebuchet MS', tahoma; }
+h1 {
+    font-size:      2.2em;
+    margin-top:     50px;
+    margin-bottom:  25px;
+    text-align:     center;
+}
+h2 {
+    font-size:      1.6em;
+    text-align:     center;
+}
+a { text-decoration: none; }
+p {
+    margin-top:     10px;
+    margin-bottom:  10px;
+    text-align:     justify;
+}
+ul { margin-left:    25px; }
+
+article {
+    max-width:       900px;
+    margin:          auto;
+}
+address {
+    border-top:     3px solid #999999;
+    margin:         50px auto 20px auto;
+    text-align:     center;
+    font-size:      1.2em;
+    font-family:    externa, 'trebuchet MS', tahoma;
+}
+
+section.derechos {
+    width:           204px;
+    border:          3px solid #999999;
+    padding:         5px 10px 5px 10px;
+    margin:          auto;
+    margin-bottom:   10px;
+    margin-top:      40px;
+    margin-right:    50px;
+    font-size:       .7em;
+    font-family:     tahoma;
+    vertical-align:   middle;
+}
+
+section.autor {
+    width:          204px;
+    border:         3px solid #999999;
+    border-radius:  10px;
+    padding:        5px 10px 5px 10px;
+    margin:         auto;
+    margin-bottom:  10px;
+    margin-top:     40px;
+    margin-right:   50px;
+    font-size:      .7em;
+    font-family:    tahoma;
+    vertical-align:  middle;
+}
+
+section.autor div { display: inline-block; }
+section.autor div.cont_texto { width: 140px; text-align: center; }
+section.autor div.cont_imagen { width: 60px; }
+
+aside {
+    background: url('https://skinait.com/ejemplos/taller_html5/fondo_div400x300.png');
+    width:      360px;
+    height:     260px;
+    color:      rgba(255,255,255,.7);
+    float:      right;
+    margin:     0px 0px 15px 15px;
+    padding:    20px;
+    font-weight: bold; 
+}
+
+@media screen and (max-width: 1000px) {
+    #logo-ppal { display: inline; }
+    #banner-ppal { display: none; }
+    nav {
+        position:       fixed;
+        padding-left:   200px;
+    }
+    aside {
+        background: url('http://www.uribetorres.com/img/fondo_div400x300.png');
+        background-size: 100% 100%;
+        width:      255px;
+        height:     180px;
+        font-size:   .8em;
+        font-family:  externa;
+    }
+    aside div.texto, aside div.destacado, aside li {
+        font-family:  externa;
+    }
+    aside div.destacado {
+        margin-top: 10px;
+        text-align: center;
+    }
+    aside li { font-size: .8em; }
+}
+
+/* ESTILOS PARA EL FORMULARIO */
+form#forma {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+fieldset {
+    padding: 20px;
+    border: 2px solid #00649b;
+    border-radius: 5px;
+}
+legend {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #00649b;
+    padding: 0 10px;
+}
+label {
+    display: inline-block;
+    width: 150px;
+    font-weight: bold;
+    vertical-align: top;
+    margin-bottom: 10px;
+}
+.ingresodato {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+input[type="text"], input[type="email"], input[type="date"], input[type="number"], select, textarea {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 250px;
+}
+.btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #00649b;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+.btn:hover {
+    background-color: #00c800;
+}

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang='es-CO'>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content='width=device-width, initial-scale=.8, maximum-scale=1.5'>
+    <title>Contáctenos - Uribe Torres Consultores</title>
+    <link rel="stylesheet" href="css/base.css">
+    <script language='JavaScript' src='lib/despliegue.js' defer></script>
+</head>
+<body>
+    <header>
+        <img id='banner-ppal' src='https://skinait.com/ejemplos/taller_html5/banner1.png' />
+        <img id='logo-ppal' src='https://skinait.com/ejemplos/taller_html5/logo.png' />
+    </header>
+
+    <nav>
+        <a href='ambiental.html' target='_top'>
+            <div id='boton1' class='bot_navegacion'>
+                <img class='icon' src='img/home.png' alt='Inicio' />
+                <p class='menutxt'>Inicio</p>
+            </div>
+        </a>       
+        <a href='experiencia.html' target='_top'>
+            <div id='boton2' class='bot_navegacion'>
+                <img class='icon' src='img/engranaje.png' alt='Experiencia' />
+                <p class="menutxt">Experiencia</p>
+            </div>
+        </a>
+        <a href='contactenos.html' target='_top'>
+            <div id='boton3' class='bot_navegacion'>
+                <img class="icon" src="img/email.png" alt='Contáctenos' />
+                <p class="menutxt">Contáctenos</p>
+            </div>
+        </a>
+        <a href='https://es.wikipedia.org/wiki/Ingenier%C3%ADa_ambiental' target='AUX'>
+            <div id='boton4' class='bot_navegacion'>
+                <img class='icon' src='img/carro.png' alt='Ing. Ambiental' />
+                <p class='menutxt'>Ing. Ambiental</p>
+            </div>
+        </a>
+    </nav>
+
+    <main id="contenedor">
+        <aside>
+            <h2>Ingeniería Ambiental</h2>
+            <div class="texto">
+                Proporcionamos soluciones efectivas en:
+                <ul>
+                    <li>Ingeniería ambiental</li>
+                    <li>Consultoría ambiental</li>
+                    <li>Gestión</li>
+                    <li>Asesoría</li>
+                    <li>Diseño</li>
+                    <li>Construcción</li>
+                    <li>Prestación de servicios ambientales</li>
+                </ul>
+            </div>
+            Brindamos asistencia en Colombia a todo tipo de empresas y particulares.
+            <div class='destacado'>
+                Nuestro compromiso es el desarrollo del país sin deteriorar el ambiente.
+            </div>
+        </aside>
+
+        <article id='contenido'>
+            <h1>Contáctenos</h1>
+            <p>Por favor, diligencie el siguiente formulario para ponerse en contacto con nosotros.</p>
+            
+            <form id="forma" method="post" enctype='multipart/form-data' action="procesador.php">
+                <fieldset>
+                    <legend>Datos Cliente</legend>
+
+                    <label for="nombre">Nombres</label>
+                    <div class="ingresodato">
+                        <input type="text" name="nombres" id="nombre" autocomplete="on" required='required' />
+                    </div>
+                    <br />
+
+                    <label for="correo">Correo Electrónico</label>
+                    <div class="ingresodato">
+                        <input type="email" id="correo" name="correo" required='required' />
+                    </div>
+                    <br />
+
+                    <label for="fecha">Fecha Nacimiento</label>
+                    <div class="ingresodato">
+                        <input type="date" id="fecha" name="fecha" required='required' />
+                    </div>
+                    <br />
+
+                    <label>Sexo</label>
+                    <div class="ingresodato">
+                        <input type="radio" id="masculino" name="radio" value="Masculino" required='required' />
+                        <label for="masculino">Masculino</label>
+                        <br />
+                        <input type="radio" id="femenino" name="radio" value="Femenino" required='required' />
+                        <label for="femenino">Femenino</label>
+                    </div>
+                    <br />
+
+                    <label for="numero">Número de Hijos</label>
+                    <div class="ingresodato">
+                        <input id="numero" type="number" name="numero" min="1" max="10" />
+                    </div>
+                    <br />
+
+                    <label for="navegador">Navegador</label>
+                    <div class="ingresodato">
+                        <input list="navegadores" name="navegador" id="navegador" />
+                    </div>
+                    <datalist id="navegadores">
+                        <option value="Internet Explorer"></option>
+                        <option value="Firefox"></option>
+                        <option value="Chrome"></option>
+                        <option value="Opera"></option>
+                        <option value="Safari"></option>
+                    </datalist>
+                    <br />
+
+                    <label for="interes">Interés particular</label>
+                    <div class="ingresodato">
+                        <input type="checkbox" name="academico" id="academico" /> 
+                        <label for="academico">Académico</label>
+                        <br/><br/>
+                        <select name='interes' id='interes'>
+                            <option value='1'>Servicios profesionales</option>
+                            <option value='2'>Remediación de suelos</option>
+                            <option value='3'>Disposición de residuos</option>
+                            <option value='4'>Contaminación ambiental</option>
+                            <option value='5'>Calidad ambiental</option>
+                        </select>
+                    </div>
+                    <br />
+
+                    <label for="comentarios">Comentarios</label>
+                    <div class="ingresodato">
+                        <textarea name="comentarios" id="comentarios" required='required' rows="4" cols="40"></textarea>
+                    </div>
+                    <br />
+
+                    <label for="adjunto">Adjuntar Imagen</label>
+                    <div class="ingresodato">
+                        <input type="file" name="adjunto" id="adjunto" />
+                    </div>
+                    <br />
+
+                    <input class="btn" type="submit" name="enviarmensaje" id="enviarmensaje" value="Enviar mensaje">
+                </fieldset>
+            </form>
+        </article>
+    </main>
+
+    <footer>
+        <address>
+            Calle 56 # 14-80, of 201 /
+            Chapinero; Bogotá D.C., 111221 /
+            Colombia
+            <br>
+            Teléfono: +57 (1) 249 4174 /
+            email: <a href="mailto:info@uribetorres.com">info@uribetorres.com</a>
+        </address>
+
+        <section class="derechos">
+            Todos los derechos reservados. Prohibida su reproducción
+            total o parcial sin la autorización escrita de
+            Uribe Torres Consultores S.A.S.
+        </section>
+
+        <section class="autor">
+            <div class="cont_texto">
+                Sitio www desarrollado por:
+                <br />
+                <a href="http://skinait.com">Skina IT Solutions E.U.</a>
+            </div>
+            <div class="cont_imagen">
+                <a href="http://skinait.com" target="SKINAIT">
+                    <img src="https://skinait.com/img/skina_dev.gif" alt="developed by Skina IT Solutions" title="developed by Skina IT Solutions" />
+                </a>
+            </div>
+        </section>
+    </footer>
+</body>
+</html>
