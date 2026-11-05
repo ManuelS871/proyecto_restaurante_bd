@@ -1,213 +1,353 @@
 # Proyecto Restaurante — Bases de Datos Administración y Aplicaciones
 
+## 1. Descripción
 
-Sistema para gestionar **mesas, reservaciones, menú, pedidos, preparación y entregas**, garantizando:
-- No superar el cupo total del restaurante.
-- No cruzar reservaciones en la misma mesa (ocupación máx. 2 horas).
-- Cocineros solo preparan platos de su especialidad.
-- Meseros registran y entregan pedidos trazables a mesa/cliente.
+Proyecto de base de datos para la gestión de un restaurante. El sistema permite administrar mesas, reservaciones, menú, pedidos, preparación y entrega de órdenes, además de generar consultas y reportes.
+
+La solución utiliza PostgreSQL como sistema gestor de bases de datos y una interfaz web desarrollada con PHP, HTML, CSS y JavaScript.
+
+El proyecto implementa las reglas de integridad definidas para el restaurante mediante claves primarias, claves foráneas, restricciones `CHECK`, triggers y particionamiento con tablespaces.
 
 ---
 
-## 1. Stack tecnológico
+## 2. Tecnologías
 
-| Componente | Tecnología |
-|---|---|
-| BD | PostgreSQL 14+ (extensión `pgcrypto` para `digest(..., 'sha256')`) |
-| Backend | PHP (procedural, plantilla del parcial docente) |
-| Frontend | HTML/CSS/JS en `public_html/` |
-| Servidor | Apache + `php-pgsql` / PHP built-in server (solo dev) |
+- PostgreSQL
+- PHP
+- HTML
+- CSS
+- JavaScript
+- Apache o servidor PHP para pruebas locales
 
-## 2. Estructura del repositorio
+---
 
-```
-/home/estudiante/
+## 3. Estructura del proyecto
+
+```text
+proyecto_restaurante/
+│
 ├── public_html/
-│   ├── index.php                 # Front controller (opcion=...)
-│   ├── esqueleto.html            # Plantilla principal (del parcial)
-│   ├── etc/parametros.php        # Credenciales BD (NO subir clave real a Git)
-│   ├── lib/
-│   │   ├── libreria.php          # pg_conectar() + procesar_query() (plantilla docente)
-│   │   └── restaurante.php       # Módulos por rol (Mesero, Cocinero, Maitre, Admin, Reportes, Historial)
-│   ├── css/estilo.css            # Estilos base + componentes TABLA_GESTION / FORM_CARD / KPI
-│   ├── esqueleto_U.html
-│   ├── procesador.php / postgres.php
-│   └── *.html                    # Páginas de plantilla / pruebas
+│   ├── index.php
+│   ├── esqueleto.html
+│   ├── css/
+│   │   └── estilo.css
+│   ├── etc/
+│   │   └── parametros.php
+│   └── lib/
+│       ├── libreria.php
+│       └── restaurante.php
+│
 ├── sql/
-│   ├── restaurante.sql           # DDL: 12 tablas del ER obligatorio
-│   ├── triggers.sql              # 5 triggers de negocio e integridad
-│   ├── particionamiento_fechas.sql # horarios PARTITION BY RANGE(inicio) + tablespaces
-│   ├── datos_restaurante.sql     # Seed mínimo (roles, usuarios, platos, mesas, 1 reserva/pedido)
-│   ├── cargar_datos_reportes.sql # Datos históricos Ago–Oct 2026 para reportes
-│   ├── consultas_reportes.sql    # 11 consultas numeradas (casos de uso + reportes)
-│   ├── pruebas_triggers.sql      # Casos positivos/negativos por trigger
-│   └── pruebas_particiones.sql   # Routing, tableoid y EXPLAIN Partition Pruning
-└── README.md                     # Este archivo
+│   ├── restaurante.sql
+│   ├── datos_restaurante.sql
+│   ├── triggers.sql
+│   ├── pruebas_triggers.sql
+│   ├── particionamiento_fechas.sql
+│   ├── pruebas_particiones.sql
+│   ├── cargar_datos_reportes.sql
+│   └── consultas_reportes.sql
+│
+├── .gitignore
+└── README.md
 ```
 
-## 3. Modelo de datos (ER obligatorio)
+### Función de los principales archivos
 
-Se implementaron **exactamente** las 12 tablas del diagrama:
-
-| Tabla | PK / Notas |
+| Archivo | Función |
 |---|---|
-| `roles` | `id SERIAL`, `nombre TEXT` (cliente, mesero, cocinero, administrador, maitre) |
-| `usuarios` | `id SERIAL`, `nombre`, `clave BYTEA` (hash SHA256), `fecha_clave TIMESTAMP` |
-| `actuaciones` | `rol_id → roles`, `usuario_id → usuarios`, UNIQUE(usuario, rol) |
-| `tipos` | `id SERIAL`, `nombre` (Entrada, Plato fuerte, Bebida, Postre) |
-| `platos` | `tipo_id → tipos`, `nombre`, `descripcion`, `tiempo INTERVAL`, `precio NUMERIC` |
-| `mesas` | `id SERIAL`, `sillas INT CHECK > 0` |
-| `reservaciones` | `cliente_id → usuarios`, `cantidad > 0`, `estado IN (0 reservada, 1 ocupada, 2 liberada, 3 cancelada)` |
-| `horarios` | `mesa_id → mesas`, `reservacion_id → reservaciones`, `inicio TIMESTAMP`, `duracion INTERVAL CHECK (0, 2h]` — **particionada** |
-| `pedidos` | `cliente_id → usuarios`, `mesero_id → usuarios` (trigger exige rol mesero) |
-| `ordenes` | `plato_id → platos`, `pedido_id → pedidos`, `estado IN (0 solicitado, 1 preparado, 2 entregado)`, `cantidad > 0`, `solicitado TIMESTAMPTZ` |
-| `especialidades` | `cocinero_id → usuarios` (rol cocinero), `plato_id → platos`, UNIQUE(cocinero, plato) |
-| `preparaciones` | `cocinero_id → usuarios`, `orden_id → ordenes` (trigger exige rol + especialidad) |
+| `public_html/index.php` | Punto de entrada de la aplicación web. |
+| `public_html/esqueleto.html` | Plantilla principal de la interfaz. |
+| `public_html/lib/libreria.php` | Funciones generales, conexión y procesamiento de consultas. |
+| `public_html/lib/restaurante.php` | Funcionalidades del restaurante y módulos por rol. |
+| `public_html/etc/parametros.php` | Parámetros de conexión a PostgreSQL. |
+| `public_html/css/estilo.css` | Estilos de la interfaz. |
+| `sql/restaurante.sql` | Creación de la estructura principal de la base de datos. |
+| `sql/datos_restaurante.sql` | Datos iniciales para probar el sistema. |
+| `sql/triggers.sql` | Reglas de negocio implementadas mediante triggers. |
+| `sql/pruebas_triggers.sql` | Pruebas de los triggers. |
+| `sql/particionamiento_fechas.sql` | Configuración del particionamiento y tablespaces. |
+| `sql/pruebas_particiones.sql` | Pruebas del particionamiento y distribución de registros. |
+| `sql/cargar_datos_reportes.sql` | Carga de datos adicionales para consultas y reportes. |
+| `sql/consultas_reportes.sql` | Consultas correspondientes a los casos de uso y reportes. |
 
-### Relación aprogramada “pedido asociado a mesa” (sin modificar ER)
+---
 
-El ER **no** incluye `pedidos.mesa_id`. Para cumplir “pedido asociado a mesa y cliente” se resolvió en el módulo Mesero mediante la cadena obligatoria:
+## 4. Modelo de datos
 
+La base de datos sigue el modelo entidad-relación definido para el proyecto y contiene las siguientes entidades principales:
+
+- `usuarios`
+- `roles`
+- `actuaciones`
+- `mesas`
+- `reservaciones`
+- `horarios`
+- `tipos`
+- `platos`
+- `especialidades`
+- `pedidos`
+- `ordenes`
+- `preparaciones`
+
+Las relaciones entre estas tablas permiten representar los usuarios y sus roles, las mesas y reservaciones, el menú, los pedidos de los clientes y el proceso de preparación de las órdenes.
+
+---
+
+## 5. Reglas de integridad
+
+El proyecto utiliza diferentes mecanismos de PostgreSQL para garantizar la consistencia de los datos.
+
+### Claves primarias
+
+Cada tabla cuenta con una clave primaria que identifica de manera única sus registros.
+
+### Claves foráneas
+
+Las claves foráneas mantienen las relaciones entre las entidades y evitan referencias a registros inexistentes.
+
+### Restricciones `CHECK`
+
+Se utilizan para validar condiciones propias de los datos, por ejemplo:
+
+- cantidades mayores que cero;
+- estados permitidos;
+- precios válidos;
+- duración válida de una reserva u horario.
+
+### Triggers
+
+Los triggers permiten validar reglas que necesitan consultar otras tablas o comprobar el estado actual de la base de datos.
+
+Entre las reglas implementadas se encuentran las relacionadas con:
+
+- rol de los meseros que registran pedidos;
+- rol y especialidad de los cocineros;
+- asignación de horarios y reservaciones;
+- capacidad de las mesas y del restaurante;
+- transición de estados de las órdenes.
+
+Los triggers y sus pruebas se encuentran en:
+
+```text
+sql/triggers.sql
+sql/pruebas_triggers.sql
 ```
-pedidos.cliente_id → reservaciones.cliente_id → horarios.mesa_id + fecha
+
+---
+
+## 6. Particionamiento y tablespaces
+
+El proyecto utiliza PostgreSQL para distribuir físicamente parte de la información mediante **tablespaces** y **particionamiento por rango de fechas**.
+
+La configuración se encuentra en:
+
+```text
+sql/particionamiento_fechas.sql
 ```
 
-En `fn_realizar_pedidos()`:
-- El formulario exige `mesa_id` y lo muestra en el título/mensaje de éxito: “Orden #X enviada a cocina! Pedido #Y asociado a la Mesa #Z”.
-- La lista “Órdenes en Proceso / Servidas (Mesa #X)” **filtra por mesa** con `EXISTS (SELECT 1 FROM horarios h JOIN reservaciones r ... WHERE h.mesa_id = ... AND r.cliente_id = ped.cliente_id AND DATE(h.inicio) = DATE(o.solicitado))`.
-- Se valida `mesa_id > 0`; si es 0 se aborta con error.
-- Para clientes walk-in (sin reserva) se mantiene la vista por cliente/fecha.
+El script define los tablespaces y las particiones correspondientes a diferentes rangos de fechas. Los directorios utilizados para los tablespaces deben existir en el servidor y pertenecer al usuario de PostgreSQL.
 
-## 4. Reglas de negocio — triggers
+La ubicación de los directorios puede cambiar dependiendo del sistema operativo o de la instalación de PostgreSQL. Por esta razón, **no se debe asumir una ruta fija**; antes de ejecutar el script se deben revisar las rutas definidas en él y adaptarlas al servidor donde se esté realizando la instalación.
 
-Archivo: `sql/triggers.sql`
+Las pruebas del particionamiento se encuentran en:
 
-1. **Trg Mesero en Pedidos** (`trg_validar_mesero_pedido`) — `pedidos.mesero_id` debe tener rol `mesero`.
-2. **Trg Cocinero en Especialidades** (`trg_validar_cocinero_especialidad`) — `especialidades.cocinero_id` debe tener rol `cocinero`.
-3. **Trg Cocinero en Preparaciones** (`trg_validar_preparacion_cocinero`) — `preparaciones.cocinero_id` debe tener rol cocinero **y** especialidad en el `plato_id` de la orden.
-4. **Trg Horarios** (`trg_validar_horario_reserva`):
-   - `duracion` ≤ 2 horas y > 0.
-   - `cantidad ≤ sillas` de la mesa.
-   - No cruce en la misma mesa: `tsrange(...) && tsrange(...)` excluyendo canceladas (estado=3).
-   - No superar cupo total: `SUM(cantidad) solapada + nueva ≤ SUM(sillas)`.
-5. **Trg Transición Órdenes** (`trg_validar_transicion_orden`) — `0→2` directo bloqueado; `2→<2` bloqueado.
+```text
+sql/pruebas_particiones.sql
+```
 
-## 5. Particiones y Tablespaces
+Estas pruebas permiten comprobar, entre otras cosas, en qué partición termina cada registro y cómo PostgreSQL utiliza las particiones.
 
-Archivo: `sql/particionamiento_fechas.sql`
+---
 
-- Tabla particionada: `horarios PARTITION BY RANGE (inicio)`, PK `(id, inicio)` (requerido por PostgreSQL).
-- 3 tablespaces físicos (se deben crear en directorios distintos del disco):
-  - `ts_reservas_1` → `horarios_historico` (< 2026-09-01)
-  - `ts_reservas_2` → `horarios_actual` (2026-09-01 a 2026-11-01)
-  - `ts_reservas_3` → `horarios_futuro` (2026-11-01 a 2027-01-01)
-  - `horarios_default` (DEFAULT → 2027+)
+## 7. Instalación de la base de datos
 
-Creación de tablespaces (como superusuario/postgres):
+El orden general recomendado es el siguiente.
+
+### Paso 1. Crear la base de datos
+
+Crear una base de datos PostgreSQL para el proyecto y un usuario con permisos suficientes para trabajar sobre ella.
+
+Ejemplo:
 
 ```bash
-sudo mkdir -p /var/lib/postgresql/tablespaces/ts_reservas_1 \
-             /var/lib/postgresql/tablespaces/ts_reservas_2 \
-             /var/lib/postgresql/tablespaces/ts_reservas_3
-sudo chown postgres:postgres /var/lib/postgresql/tablespaces/ts_reservas_*
-psql -U postgres -d restaurante -c "
-CREATE TABLESPACE ts_reservas_1 LOCATION '/var/lib/postgresql/tablespaces/ts_reservas_1';
-CREATE TABLESPACE ts_reservas_2 LOCATION '/var/lib/postgresql/tablespaces/ts_reservas_2';
-CREATE TABLESPACE ts_reservas_3 LOCATION '/var/lib/postgresql/tablespaces/ts_reservas_3';
-"
+psql -U postgres
 ```
 
-Validación: `sql/pruebas_particiones.sql` (insert por rango, `tableoid::regclass` + `pg_tablespace.spcname` y `EXPLAIN` de Partition Pruning).
+Dentro de PostgreSQL:
 
-## 6. Instalación y levantamiento
+```sql
+CREATE DATABASE restaurante;
+```
 
-### 6.1 Prerrequisitos
+La creación del usuario y la asignación de permisos dependerán de la configuración del servidor.
 
-- PostgreSQL 14+, PHP 7.4+ con `php-pgsql`, Apache (o PHP built-in).
-- Extensión: `CREATE EXTENSION IF NOT EXISTS pgcrypto;`
-- Usuario/BD: ver `public_html/etc/parametros.php` (por defecto `usuario` / `restaurante`, ajuste con `export PGPASSWORD` y `\c`).
+### Paso 2. Crear la estructura
 
-### 6.2 Crear BD e inicializar esquema (orden obligatorio)
+Desde la terminal:
 
 ```bash
-psql -U postgres -c "CREATE DATABASE restaurante OWNER manuel;"
-psql -U manuel -d restaurante -c "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
-
-# 1. Tablas ER
-psql -U manuel -d restaurante -f sql/restaurante.sql
-# 2. Triggers
-psql -U manuel -d restaurante -f sql/triggers.sql
-# 3. Particiones + tablespaces (crear tablespaces físicos antes)
-psql -U manuel -d restaurante -f sql/particionamiento_fechas.sql
-# 4. Seed mínimo
-psql -U manuel -d restaurante -f sql/datos_restaurante.sql
-# 5. Datos para reportes (opcional pero recomendado)
-psql -U manuel -d restaurante -f sql/cargar_datos_reportes.sql
+psql -U <usuario> -d restaurante -f sql/restaurante.sql
 ```
 
-### 6.3 Servidor web
-
-**Opción A — Apache**
+### Paso 3. Cargar los datos iniciales
 
 ```bash
-sudo a2enmod php8.2  # o tu versión
-sudo systemctl restart apache2
+psql -U <usuario> -d restaurante -f sql/datos_restaurante.sql
 ```
 
-### Credenciales de prueba (seed)
-
-| Usuario | Clave | Rol |
-|---|---|---|
-| Carlos Perez | `cliente123` | cliente |
-| Laura Gomez | `mesero123` | mesero |
-| Juan Martinez | `cocinero123` | cocinero |
-| Ana Rodriguez | `admin123` | administrador |
-
-> En `cargar_datos_reportes.sql` se añaden Diego Ramirez (maitre), Sofia Lopez (mesero), Andres Torres (cocinero), Mariana Silva / Jorge Castro / Valentina Rojas (cliente), todos con `pass123`/`maitre123` según script.
-
-## 7. Rutas de la aplicación (módulos por rol)
-
-Entradas: `public_html/index.php?opcion=...` (template `esqueleto.html` + `lib/libreria.php` del parcial).
-
-| Ruta | Rol | Caso de Uso |
-|---|---|---|
-| `?opcion=` | — | Menú principal + alertas Mesero/Maitre |
-| `?opcion=desplegar_menu` | — | Ver menú por tipo (original del parcial) |
-| `?opcion=realizar_pedidos&mesa_id=X` | Mesero | Pedidos + Entregas (CU-4/5) |
-| `?opcion=cocinero&cocinero_id=X` | Cocinero | Comandas por especialidad, `tiempo DESC` |
-| `?opcion=maitre` | Maitre | Reservaciones CRUD + notificación 60 min (CU-2) |
-| `?opcion=administrador&sub=mesas|menu|empleados` | Admin | Mesas (CU-1), Menú (CU-3), Empleados/Especialidades |
-| `?opcion=reportes&periodo=dia|semana|mes&filtro=...` | Admin | Ventas/reservas día/semana/mes + ranking (CU-6) |
-| `?opcion=historial_cliente&cliente_id=X` | — | Historial unificado reservas+pedidos |
-
-## 8. Consultas y reportes
-
-Las 11 consultas numeradas están en `sql/consultas_reportes.sql`:
-
-1. Ventas por día
-2. Ventas por semana ISO
-3. Ventas por mes con desglose por categoría
-4. Ranking `DENSE_RANK()` platos más solicitados
-5. Reservas totales/canceladas/tasa éxito por mes
-6. Cupo total `SUM(sillas)`, `COUNT`, `AVG`
-7. Disponibilidad de mesa en rango (excluye solapadas)
-8. Comanda Cocinero por `tiempo DESC` (solo especialidades)
-9. Notificación Mesero (órdenes `estado=1`)
-10. Notificación Maitre (próximas / en curso, ventana 60 min)
-11. Historial integral por cliente (`UNION ALL` reservas+pedidos)
-
-La misma lógica se replica en `fn_reportes()` en PHP, con filtros `dia/semana/mes` y KPIs.
-
-## 9. Pruebas
+### Paso 4. Configurar los triggers
 
 ```bash
-# Triggers (positivo/negativo)
-psql -U manuel -d restaurante -f sql/pruebas_triggers.sql
-
-# Particiones y Partition Pruning
-psql -U manuel -d restaurante -f sql/pruebas_particiones.sql
-
-# Conexión PHP/PostgreSQL
-php public_html/postgres.php
+psql -U <usuario> -d restaurante -f sql/triggers.sql
 ```
+
+### Paso 5. Configurar tablespaces y particiones
+
+Primero se deben crear los directorios y tablespaces requeridos por el servidor. Después se ejecuta:
+
+```bash
+psql -U <usuario> -d restaurante -f sql/particionamiento_fechas.sql
+```
+
+### Paso 6. Cargar datos para reportes
+
+Cuando se requieran datos adicionales para las pruebas:
+
+```bash
+psql -U <usuario> -d restaurante -f sql/cargar_datos_reportes.sql
+```
+
+---
+
+## 8. Configuración de la aplicación web
+
+La aplicación utiliza los parámetros definidos en:
+
+```text
+public_html/etc/parametros.php
+```
+
+Se deben configurar allí los datos correspondientes al servidor PostgreSQL utilizado:
+
+```text
+host
+base de datos
+usuario
+contraseña
+```
+
+Las credenciales reales deben mantenerse fuera de repositorios públicos o archivos de entrega cuando sea necesario.
+
+La aplicación utiliza la función de conexión definida en `lib/libreria.php` para comunicarse con PostgreSQL.
+
+---
+
+## 9. Ejecución de la aplicación
+
+La aplicación puede ejecutarse utilizando Apache o un servidor PHP apropiado para el entorno de desarrollo.
+
+Por ejemplo, para una prueba local con el servidor incorporado de PHP:
+
+```bash
+php -S localhost:8000 -t public_html
+```
+
+Después se puede acceder desde un navegador a:
+
+```text
+http://localhost:8000/
+```
+
+La configuración exacta dependerá del servidor utilizado.
+
+---
+
+## 10. Funcionalidades principales
+
+### Gestión de mesas
+
+Permite administrar las mesas y su capacidad.
+
+### Gestión de reservaciones
+
+Permite registrar y gestionar reservaciones, asignar horarios y mesas y validar las condiciones de capacidad y disponibilidad.
+
+### Gestión del menú
+
+Permite administrar tipos de platos y los platos disponibles, incluyendo información como descripción, precio y tiempo de preparación.
+
+### Registro de pedidos
+
+Permite registrar pedidos asociados a clientes y meseros y agregar los diferentes platos solicitados.
+
+### Preparación de pedidos
+
+Permite identificar los platos que puede preparar cada cocinero y gestionar el estado de las órdenes.
+
+### Entrega de pedidos
+
+Permite actualizar las órdenes cuando se encuentran listas y cuando son entregadas.
+
+### Reportes
+
+La base de datos incluye consultas para obtener información sobre:
+
+- ventas;
+- reservaciones;
+- platos más solicitados;
+- disponibilidad de mesas;
+- pedidos y órdenes;
+- historial de clientes.
+
+Las consultas se encuentran en:
+
+```text
+sql/consultas_reportes.sql
+```
+
+---
+
+## 11. Pruebas
+
+### Pruebas de integridad
+
+```bash
+psql -U <usuario> -d restaurante -f sql/pruebas_triggers.sql
+```
+
+Estas pruebas comprueban casos válidos y casos que deben ser rechazados por las reglas de negocio.
+
+### Pruebas de particionamiento
+
+```bash
+psql -U <usuario> -d restaurante -f sql/pruebas_particiones.sql
+```
+
+Estas pruebas permiten verificar el funcionamiento de las particiones y su distribución.
+
+### Consultas de reportes
+
+```bash
+psql -U <usuario> -d restaurante -f sql/consultas_reportes.sql
+```
+
+También se pueden ejecutar individualmente desde `psql` para demostrar cada caso de uso durante la sustentación.
+
+---
+
+## 12. Orden recomendado para revisar el proyecto
+
+Para comprender o sustentar el proyecto, se recomienda seguir este orden:
+
+1. Revisar el modelo de datos en `sql/restaurante.sql`.
+2. Revisar los datos iniciales en `sql/datos_restaurante.sql`.
+3. Revisar las reglas de integridad en `sql/triggers.sql`.
+4. Ejecutar `sql/pruebas_triggers.sql`.
+5. Revisar la configuración de particiones y tablespaces en `sql/particionamiento_fechas.sql`.
+6. Ejecutar `sql/pruebas_particiones.sql`.
+7. Revisar las consultas y reportes en `sql/consultas_reportes.sql`.
+8. Revisar la interfaz web en `public_html/`.
+9. Probar las funcionalidades desde los diferentes roles del sistema.
+
+Este orden permite pasar primero por la estructura de la base de datos, después por sus reglas de integridad y distribución física y finalmente por la interfaz y las funcionalidades del restaurante.
 
