@@ -72,14 +72,3 @@ Desktop.ini
 *.swp
 *.swo
 
-# ─────────────────────────────────────────────────────────────
-# NOTA: public_html/etc/parametros.php se sube solo como
-# ejemplo/sin clave real. Si necesitas la conexión local,
-# renómbralo a parametros.local.php (ignorado) o úsalo
-# con variables de entorno. Si ya lo subiste con clave,
-# ROTA la clave en PostgreSQL inmediatamente.
-# ─────────────────────────────────────────────────────────────
-
-# ============================================================
-# FIN .gitignore
-# ============================================================
