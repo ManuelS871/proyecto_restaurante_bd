@@ -1,7 +1,5 @@
 # Proyecto Restaurante — Bases de Datos Administración y Aplicaciones
 
-**Pontificia Universidad Javeriana · Facultad de Ingeniería · Departamento de Ingeniería de Sistemas**  
-Ing. Ricardo Naranjo Faccini, MSc
 
 Sistema para gestionar **mesas, reservaciones, menú, pedidos, preparación y entregas**, garantizando:
 - No superar el cupo total del restaurante.
@@ -229,6 +227,3 @@ php public_html/postgres.php
 - `public_html/.gitignore` debe excluir `parametros.php` (conserva solo el ejemplo) o los respaldos `*.bak`.
 - `backup.sql` es un volcado local de referencia; puede excluirse de GitHub si es muy grande.
 
-## 11. Fecha de entrega
-
-**2026-10-09** (ver `2026.3-ProyectoRestaurante.pdf`)

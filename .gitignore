@@ -1,0 +1,85 @@
+# ============================================================
+# .gitignore — Proyecto Restaurante (PostgreSQL + PHP)
+# ============================================================
+
+# ─────────────────────────────────────────────────────────────
+# 1. Credenciales y configuración local — ¡CRÍTICO!
+#    Nunca se deben subir a GitHub (clave BD real)
+# ─────────────────────────────────────────────────────────────
+
+# Archivo real de parámetros (host/user/pass BD)
+public_html/etc/parametros.php
+.env
+.env.local
+.env.production
+
+
+# ─────────────────────────────────────────────────────────────
+# 2. Backups y dumps de BD (pesados, contienen datos reales)
+# ─────────────────────────────────────────────────────────────
+backup.sql
+*.sql.bak
+*.dump
+*.backup
+backups/
+
+# ─────────────────────────────────────────────────────────────
+# 3. Cachés y archivos temporales del entorno
+# ─────────────────────────────────────────────────────────────
+.aider*
+.aider.chat.history.md
+.aider.input.history
+.DS_Store
+.vscode/
+.idea/
+*.log
+*.tmp
+*.swp
+*~
+
+# ─────────────────────────────────────────────────────────────
+# 4. Python / Flask (código muerto eliminado, pero por si acaso)
+# ─────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.pytest_cache/
+venv/
+.venv/
+env/
+
+# ─────────────────────────────────────────────────────────────
+# 5. Dependencias del servidor (no se suben)
+# ─────────────────────────────────────────────────────────────
+node_modules/
+vendor/
+
+# ─────────────────────────────────────────────────────────────
+# 6. Resultados de pruebas locales (no se entregan)
+# ─────────────────────────────────────────────────────────────
+resultados/
+output/
+*.out
+
+# ─────────────────────────────────────────────────────────────
+# 7. Sistema / OS / Editor
+# ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+
+# ─────────────────────────────────────────────────────────────
+# NOTA: public_html/etc/parametros.php se sube solo como
+# ejemplo/sin clave real. Si necesitas la conexión local,
+# renómbralo a parametros.local.php (ignorado) o úsalo
+# con variables de entorno. Si ya lo subiste con clave,
+# ROTA la clave en PostgreSQL inmediatamente.
+# ─────────────────────────────────────────────────────────────
+
+# ============================================================
+# FIN .gitignore
+# ============================================================
